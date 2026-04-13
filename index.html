@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Consumo Consciente de Informação</title>
+<style>
+body{font-family:Arial;background:linear-gradient(135deg,#020617,#0f172a);color:white;margin:0;padding:0}
+.header{padding:40px;text-align:center;background:linear-gradient(135deg,#22c55e,#16a34a)}
+h1{margin:0;font-size:36px}
+.container{max-width:900px;margin:auto;padding:20px}
+.card{background:rgba(30,41,59,0.85);margin:20px 0;padding:25px;border-radius:20px;backdrop-filter:blur(15px);box-shadow:0 10px 30px rgba(0,0,0,0.6);transition:0.3s}
+.card:hover{transform:translateY(-8px) scale(1.01)}
+h2{color:#4ade80}
+button{margin-top:10px;padding:12px 18px;border:none;border-radius:12px;background:linear-gradient(135deg,#22c55e,#4ade80);color:black;font-weight:bold;cursor:pointer;transition:0.3s}
+button:hover{transform:scale(1.07);opacity:0.9}
+.hidden{display:none}
+input{padding:12px;border-radius:10px;border:none;margin-top:10px;width:80%;font-size:15px}
+.footer{text-align:center;padding:20px;opacity:0.6}
+.quiz-btn{background:#4ade80;color:black;margin:5px 0}
+.quiz-btn:hover{background:#22c55e}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>🌐 Consumo Consciente</h1>
+<p>Use a informação com responsabilidade 🚀</p>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h2>🧠 Pense antes de compartilhar</h2>
+<p>Antes de compartilhar qualquer conteúdo, reflita sobre o impacto.</p>
+<button onclick="toggle('p1')">Ver dica</button>
+<p id="p1" class="hidden">Pergunte-se: isso pode prejudicar alguém? Eu tenho certeza dessa informação?</p>
+</div>
+
+<div class="card">
+<h2>🔍 Verifique a origem</h2>
+<p>Saiba de onde vem a informação.</p>
+<button onclick="toggle('p2')">Ver dica</button>
+<p id="p2" class="hidden">Prefira fontes conhecidas e evite conteúdos sem autoria.</p>
+</div>
+
+<div class="card">
+<h2>📱 Cuidado com redes sociais</h2>
+<p>Nem tudo que aparece nelas é confiável.</p>
+<button onclick="toggle('p3')">Ver dica</button>
+<p id="p3" class="hidden">Algoritmos mostram o que chama atenção, não o que é verdadeiro.</p>
+</div>
+
+<div class="card">
+<h2>💬 Evite espalhar boatos</h2>
+<p>Compartilhar sem pensar pode causar problemas.</p>
+<button onclick="toggle('p4')">Ver dica</button>
+<p id="p4" class="hidden">Mesmo sem intenção, você pode contribuir para a desinformação.</p>
+</div>
+
+<div class="card">
+<h2>📝 Seu compromisso</h2>
+<input id="compromisso" placeholder="Ex: Vou verificar antes de compartilhar">
+<br>
+<button onclick="salvar()">Salvar</button>
+<p id="resposta"></p>
+</div>
+
+<div class="card">
+<h2>🧠 Quiz Interativo</h2>
+<p id="pergunta"></p>
+<div id="opcoes"></div>
+<p id="resultadoQuiz"></p>
+<button onclick="proximaPergunta()">➡️ Próxima</button>
+</div>
+
+</div>
+
+<div class="footer">
+Projeto educativo 💡
+</div>
+
+<script>
+function toggle(id){
+ document.getElementById(id).classList.toggle('hidden');
+}
+
+function salvar(){
+ let val=document.getElementById('compromisso').value;
+ localStorage.setItem('compromisso',val);
+ document.getElementById('resposta').innerText="Seu compromisso: "+val;
+}
+
+let perguntas=[
+ {pergunta:"Você deve compartilhar tudo que vê?",opcoes:["Sim","Não"],correta:1},
+ {pergunta:"Informação sem fonte é:",opcoes:["Confiável","Suspeita"],correta:1},
+ {pergunta:"Redes sociais mostram:",opcoes:["O mais chamativo","Só verdade"],correta:0}
+];
+
+let atual=0;
+
+function mostrarPergunta(){
+ let p=perguntas[atual];
+ document.getElementById("pergunta").innerText=p.pergunta;
+ let opDiv=document.getElementById("opcoes");
+ opDiv.innerHTML="";
+ p.opcoes.forEach((op,i)=>{
+  let btn=document.createElement("button");
+  btn.innerText=op;
+  btn.className="quiz-btn";
+  btn.onclick=()=>responder(i);
+  opDiv.appendChild(btn);
+ });
+}
+
+function responder(i){
+ let correta=perguntas[atual].correta;
+ let res=document.getElementById("resultadoQuiz");
+ res.innerText = i===correta ? "✅ Boa!" : "❌ Pense melhor!";
+}
+
+function proximaPergunta(){
+ atual=(atual+1)%perguntas.length;
+ document.getElementById("resultadoQuiz").innerText="";
+ mostrarPergunta();
+}
+
+window.onload=function(){
+ let val=localStorage.getItem('compromisso');
+ if(val){ document.getElementById('resposta').innerText="Seu compromisso: "+val; }
+ mostrarPergunta();
+}
+</script>
+
+</body>
+</html>
